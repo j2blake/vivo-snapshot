@@ -11,7 +11,19 @@ repeat until the entire site is tested. Or simply test the entire set to begin w
 - Once we have found two differing results, we want to re-compare them using different sets of expected changes, 
 in order to develop our sets.
 
+## Approach
+A group of commands that will allow you to:
+- Create a list of interesting URIs from a VIVO instance.
+- Create lists of requests that will be run against that VIVO instance.
+- Authorize a VIVO account to be a proxy self-editor on a list of individuals.
+- Capture a snapsnot of the VIVO instance, in the form of the responses that come from a list of requests.
+- Compare two snapshots, allowing for some expected changes, and producing a list of the unexpected changes.
+
 ## Structures
+
+## URI List
+- Just a list of URIs, one per line.
+
 ### Session List
 - At its simplest form, a list of URLs which can be used for a snapshot.
 - More precisely, a list of requests, one per line: 
@@ -40,14 +52,31 @@ Write triples to the user accounts model of the VIVO to create the self-editor-a
 and to make it a proxy editor for all of the URLs in the list.
 
 ```
-vivosnap prepare sub-list ./full-list 50
+vivosnap prepare sub-list [session_list_file] [count] [sub_list_file]
 ```
+Create a smaller session list from an existing one. 
+The new list will have the specified number of entries, extracted at even intervals from the existing list.
+
 ```
-vivosnap capture ‘http://localhost:8080/vivo’ ./list target_directory [OVERWRITE|REPLACE]
+vivosnap capture [VIVO_homepage_URL] [session_list_file] [responses_directory] {OVERWRITE|REPLACE}
 ```
+Capture a snapshot. Provide the URL of the VIVO home page, and a session list, and the tool will
+make the requests, storing the responses in the given directory. 
+If the responses directory does not exist, it will be created, providing its parent directory exists.
+If the responses directory is not empty, you must specify either OVERWRITE or REPLACE. 
+- OVERWRITE creates new responses, writing over existing ones as appropriate.
+- REPLACE deletes the contents of the directory before running.
+
 ```
-vivosnap compare reference_directory test_directory expected_changes_file differences_directory
+vivosnap compare [reference_responses_directory] [test_responses_directory] {expected_changes_file} [differences_directory]
 ```
+Compare two snapshots. 
+The test snapshot is expected to be a subset of the reference snapshot (or equivalent), taken at a later time.
+The list of expected changes, if present, will be applied when comparing responses.
+The differences between the snapshots will be stored in the given directory.
+
 ```
-vivosnap re-compare differences_directory expected_changes_file new_differences_directory
+vivosnap re-compare [differences_directory] [expected_changes_file] [new_differences_directory]
 ```
+Re-compare just the differences between two snapshots, presumably with a different list of expected changes.
+The original snapshot directories must still exist, because the differences directory will reference them.
