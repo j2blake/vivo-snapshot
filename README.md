@@ -80,3 +80,29 @@ vivosnap re-compare [differences_directory] [expected_changes_file] [new_differe
 ```
 Re-compare just the differences between two snapshots, presumably with a different list of expected changes.
 The original snapshot directories must still exist, because the differences directory will reference them.
+
+## Data structure details
+
+### Session list
+Here is a silly pseudo-syntax. URLs are all relative to the VIVO home page.
+```
+line ⇔ session
+session ⇔ [login ==> ] request [ ==> request ]*
+login ⇔ LOGIN email pass
+request ⇔ url [method | header | parameter]*
+method ⇔ GET | POST
+header ⇔ key(value)
+parameter ⇔ key=value
+value ⇔ must be in single quotes if contains space
+```
+
+#### Examples
+* A simple URL
+
+        display/cwid-cim9006
+* A POST request with parameters
+
+        admin/developerAjax POST Accept(text/plain) query='this and that'
+* A simple request from a logged in user
+
+        LOGIN tadmin@mydomain.edu Password ==> display/cwid-cim9006
