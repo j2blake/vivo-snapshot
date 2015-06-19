@@ -21,23 +21,25 @@ A group of commands that will allow you to:
 
 ## Structures
 
-## URI List
-- Just a list of URIs, one per line.
+### URI List
+- One URI per line. Blank lines, or lines that begin with '#', are ignored.
 
 ### Session List
-- At its simplest form, a list of URLs which can be used for a snapshot.
-- More precisely, a list of requests, one per line: 
-in addition to the URL, each request may specify POST or GET, HTTP headers, and parameters. 
-- Each line in the file can actually constitute a session, with an optional login/logout, and multiple requests.
+- One request session per line. Blank lines, or lines that begin with '#', are ignored.
+- A request may be a single URL.
+- A request may also specify POST or GET, HTTP headers, and parameters. 
+- A session may contain multiple requests, with an optional login/logout specification.
 
 ## Commands
 
 ```
-vivosnap.rb prepare uri-list [classlist_file] [VIVO_homepage_URL] [uri_list_file]
+vivosnap.rb prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}
 ```
 **NOT IMPLEMENTED**  
 Create a list of URIs. You provide a file with class URIs, and a URL for VIVO. 
-The tool will make requests of VIVOs ListRDF API, and write the results to the URI list file.
+The tool will make requests of VIVOs ListRDF API, and write the results. 
+If uri_list_file already exists, you must specify REPLACE. If uri_list_file is not provided,
+the URI list goes to stdout, along with the summary info. 
 
 ```
 vivosnap.rb prepare session-list [uri_list_file] [account_email] [account_password] [session_list_file]
@@ -97,6 +99,10 @@ does not allow for expected changes.
 
 
 ## Data structure details
+
+### Class list
+- One URI per line.
+- Blank lines and lines that begin with '#' will be treated as comments.
 
 ### Session list
 Here is a pseudo-syntax. URLs are all relative to the VIVO home page.

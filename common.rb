@@ -11,10 +11,12 @@ def warning(message)
   puts("WARNING: #{message}")
 end
 
-module Kernel
-  def bogus(message)
-    puts(">>>>>>>>>>>>>BOGUS #{message}")
-  end
+def bogus(message)
+  puts(">>>>>>>>>>>>>BOGUS #{message}")
+end
+
+def complain(message)
+  raise UserInputError.new(message)
 end
 
 require_relative 'cmd_prepare_uri_list/cmd_prepare_uri_list'
@@ -25,3 +27,4 @@ require_relative 'cmd_capture/cmd_capture'
 require_relative 'cmd_compare/cmd_compare'
 require_relative 'cmd_compare_again/cmd_compare_again'
 require_relative 'cmd_display/cmd_display'
+require_relative 'utils/http_request'

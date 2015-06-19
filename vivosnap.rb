@@ -24,7 +24,7 @@ class Vivosnap
         return
       end
     end
-    raise UserInputError.new("Arguments not valid: #{args.join(' ')}\nValid choices are #{format_cmds}")
+    complain("Arguments not valid: #{args.join(' ')}\nValid choices are #{format_cmds}")
   end
 
   def format_cmds()
