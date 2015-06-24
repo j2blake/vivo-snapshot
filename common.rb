@@ -19,6 +19,30 @@ def complain(message)
   raise UserInputError.new(message)
 end
 
+#
+# Record stdout and stderr, even while they are being displayed.
+#
+class MultiIO < IO
+  def initialize(*targets)
+     @targets = targets
+  end
+
+  def write(*args)
+    @targets.each {|t| t.write(*args)}
+  end
+
+  def flush()
+    @targets.each(&:flush)
+  end
+
+  def close
+    @targets.each(&:close)
+  end
+end
+
+$stdout = MultiIO.new(STDOUT, File.open(File.expand_path('~/vivosnap.stdout'), "w"))
+$stderr = MultiIO.new(STDERR, File.open(File.expand_path('~/vivosnap.stderr'), "w"))
+
 require_relative 'cmd_prepare_uri_list/cmd_prepare_uri_list'
 require_relative 'cmd_prepare_session_list/cmd_prepare_session_list'
 require_relative 'cmd_prepare_self_editor_account/cmd_prepare_self_editor_account'

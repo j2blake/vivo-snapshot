@@ -13,7 +13,9 @@ class CmdPrepareUriList
   USAGE = 'prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}'
   def initialize(args)
     @args = args
-    complain("usage: #{USAGE}") unless (2..4).include? args.size
+
+    @replace = args.delete('REPLACE')
+    complain("usage: #{USAGE}") unless (2..3).include? args.size
 
     @class_list_file = args[0]
     complain("'#{@class_list_file}' does not exist.") unless File.exist?(@class_list_file)
@@ -31,7 +33,7 @@ class CmdPrepareUriList
     @uri_list_file = args[2]
 
     if @uri_list_file
-      complain("'#{@uri_list_file}' already exists. Specify REPLACE to replace it.") if File.exist?(@uri_list_file) unless 'REPLACE' == args[3]
+      complain("'#{@uri_list_file}' already exists. Specify REPLACE to replace it.") if File.exist?(@uri_list_file) unless @replace
       @output = File.open(@uri_list_file, 'w')
     else
       @output = $stdout

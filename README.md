@@ -35,16 +35,14 @@ A group of commands that will allow you to:
 ```
 vivosnap.rb prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}
 ```
-**NOT IMPLEMENTED**  
 Create a list of URIs. You provide a file with class URIs, and a URL for VIVO. 
 The tool will make requests of VIVOs ListRDF API, and write the results. 
 If uri_list_file already exists, you must specify REPLACE. If uri_list_file is not provided,
 the URI list goes to stdout, along with the summary info. 
 
 ```
-vivosnap.rb prepare session-list [uri_list_file] [account_email] [account_password] [session_list_file]
+prepare session-list [uri_list_file] {account_email:account_password} {session_list_file {REPLACE}}
 ```
-**NOT IMPLEMENTED**  
 Create a session list. 
 You provide a file of URIs, and the tool will generate the URLs needed to fetch the profile pages for those URIs.
 If you want a login on each session, provide the email address and password of the desired login account.
