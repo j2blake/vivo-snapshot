@@ -22,10 +22,13 @@ A group of commands that will allow you to:
 ## Structures
 
 ### URI List
-- One URI per line. Blank lines, or lines that begin with '#', are ignored.
+- One URI per line. 
+- White space at the beginning or end of the line is ignored. 
+- Blank lines, or lines that begin with '#', are ignored.
 
 ### Session List
-- One request session per line. Blank lines, or lines that begin with '#', are ignored.
+- One request session per line. 
+- Blank lines, or lines that begin with '#', are ignored.
 - A request may be a single URL.
 - A request may also specify POST or GET, HTTP headers, and parameters. 
 - A session may contain multiple requests, with an optional login/logout specification.
@@ -48,11 +51,10 @@ You provide a file of URIs, and the tool will generate the URLs needed to fetch 
 If you want a login on each session, provide the email address and password of the desired login account.
 
 ```
-vivosnap.rb prepare self-editor-account [VIVO_homepage_URL] [uri_list_file] [admin_email] [admin_password] [editor_email] [editor_password]
+vivosnap.rb prepare self-editor-account [VIVO_homepage_URL] [uri_list_file] [admin_email:admin_password] [editor_email:editor_password]
 ```
-**NOT IMPLEMENTED**  
 Write triples to the user accounts model of the VIVO to create the self-editor-account (unless it exists already) 
-and to make it a proxy editor for all of the URLs in the list.
+and to make it a proxy editor for each of the URLs in the list.
 
 ```
 vivosnap.rb prepare sub-list [session_list_file] [count] [sub_list_file]

@@ -38,8 +38,15 @@ class HttpRequest
 
       begin
         http.request(request) do |response|
-          response.value
-          yield response if block_given?
+          if response.kind_of? Net::HTTPRedirection
+            new_url = response['location']
+            HttpRequest.new(new_url, @method).headers(@headers).parameters(@parameters).exec do |r|
+              yield r if block_given?
+            end
+          else
+            response.value
+            yield response if block_given?
+          end
         end
       rescue Net::HTTPServerException => e
         raise e.exception(e.message << "\nProblem request: \n#{inspect_request(request, @url)}")
@@ -59,7 +66,7 @@ class HttpRequest
     end
 
   end
-  
+
   def inspect_request(r, url)
     headers = r.to_hash.to_a.map{|h| "   #{h[0]} ==> #{h[1]}"}.join("\n")
     body = body ? CGI.unescape(r.body) : 'NO BODY'

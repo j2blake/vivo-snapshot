@@ -13,31 +13,13 @@ class CmdPrepareUriList
   USAGE = 'prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}'
   def initialize(args)
     @args = args
-
     @replace = args.delete('REPLACE')
+    
     complain("usage: #{USAGE}") unless (2..3).include? args.size
 
-    @class_list_file = args[0]
-    complain("'#{@class_list_file}' does not exist.") unless File.exist?(@class_list_file)
-
-    @vivo_home_url = args[1]
-    begin
-      HttpRequest.new(@vivo_home_url).exec do |response|
-        complain("Response from '#{@vivo_home_url}' does not look like VIVO's home page.") unless response.body =~ /body class="home"/
-      end
-    rescue
-      puts "#{$!}\n#{$!.backtrace.join("\n")}"
-      complain("Can't contact VIVO at '#{@vivo_home_url}': #{$!}")
-    end
-
-    @uri_list_file = args[2]
-
-    if @uri_list_file
-      complain("'#{@uri_list_file}' already exists. Specify REPLACE to replace it.") if File.exist?(@uri_list_file) unless @replace
-      @output = File.open(@uri_list_file, 'w')
-    else
-      @output = $stdout
-    end
+    @class_list_file = confirm_file_exists(args[0])
+    @vivo_home_url = confirm_vivo_home_url(args[1])
+    @output = set_output_io(args[2], @replace)
   end
 
   def run()

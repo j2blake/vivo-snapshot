@@ -28,34 +28,29 @@ class CmdPrepareSessionList
 
     complain("usage: #{USAGE}") unless (1..3).include? args.size
 
-    @uri_list_file = args[0]
-    complain("'#{@uri_list_file}' does not exist.") unless File.exist?(@uri_list_file)
+    @uri_list_file = confirm_file_exists(args[0])
+    @credential, @session_list_file = parse_remaining_args(args)
+    @output = set_output_io(@session_list_file, @replace)
+  end
 
+  def parse_remaining_args(args)
     case args.size
     when 1
-      @credentials = nil
-      @session_list_file = nil
+      [nil, nil]
     when 2
       if args[1].include?(':')
-        @credentials = args[1].split(':')
-        @session_list_file = nil
+        [split_credentials(args[1]), nil]
       else
-        @credentials = nil
-        @session_list_file = args[1]
+        [nil, args[1]]
       end
-    else
-      @credentials = args[1].split(':')
-      @session_list_file = args[2]
+    else # 3
+      [split_credentials(args[1]), args[2]]
     end
-
-    complain("usage: #{USAGE}") if @credentials && @credentials.size != 2
-
-    if (@session_list_file)
-      complain("#{@session_list_file} already exists. Specify REPLACE to overwrite.") if File.exist?(@session_list_file) unless @replace
-      @output = File.open(@session_list_file, 'w')
-    else
-      @output = $stdout
-    end
+  end
+  
+  def split_credentials(arg)
+    complain("usage: #{USAGE}") unless 1 == arg.count(':')
+    arg.split(':')
   end
 
   def run()
