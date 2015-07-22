@@ -59,7 +59,6 @@ and to make it a proxy editor for each of the URLs in the list.
 ```
 vivosnap.rb prepare sub-list [session_list_file] [count] [sub_list_file]
 ```
-**NOT IMPLEMENTED**  
 Create a smaller session list from an existing one. 
 The new list will have the specified number of entries, extracted at even intervals from the existing list.
 

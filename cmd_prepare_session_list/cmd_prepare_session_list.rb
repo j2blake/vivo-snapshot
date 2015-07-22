@@ -22,6 +22,7 @@ vivosnap.rb prepare session-list [uri_list_file] [account_email:account_password
 
 class CmdPrepareSessionList
   USAGE = 'prepare session-list [uri_list_file] {account_email:account_password} {session_list_file {REPLACE}}'
+  
   def initialize(args)
     @args = args
     @replace = true && args.delete('REPLACE')
@@ -47,7 +48,7 @@ class CmdPrepareSessionList
       [split_credentials(args[1]), args[2]]
     end
   end
-  
+
   def split_credentials(arg)
     complain("usage: #{USAGE}") unless 1 == arg.count(':')
     arg.split(':')

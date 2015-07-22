@@ -7,14 +7,21 @@ http://localhost:8080/vivo/listrdf?vclass=http%3A%2F%2Fvivoweb.org%2Fontology%2F
 write the results to the file, one URI per line.
 
 --------------------------------------------------------------------------------
+
+vivosnap.rb prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}
+
+--------------------------------------------------------------------------------
+
 =end
 
 class CmdPrepareUriList
+  include ::ArgsChecker
+
   USAGE = 'prepare uri-list [class_list_file] [VIVO_homepage_URL] {uri_list_file {REPLACE}}'
   def initialize(args)
     @args = args
     @replace = args.delete('REPLACE')
-    
+
     complain("usage: #{USAGE}") unless (2..3).include? args.size
 
     @class_list_file = confirm_file_exists(args[0])

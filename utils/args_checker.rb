@@ -30,7 +30,7 @@ module ArgsChecker
     rescue
       complain("Can't contact VIVO at '#{url}': #{$!}")
     end
-    
+
     url
   end
 
@@ -48,5 +48,18 @@ module ArgsChecker
     else
       $stdout
     end
+  end
+
+  #
+  # The parameter should be a String representing an integer greater than 0.
+  #
+  def confirm_positive_integer(count_str)
+    begin
+      count = count_str.to_i
+    rescue
+      complain("Not a valid integer: '#{count_str}'")
+    end
+    complain("Expecting a positive integer, not '#{count_str}'") unless count > 0
+    count
   end
 end

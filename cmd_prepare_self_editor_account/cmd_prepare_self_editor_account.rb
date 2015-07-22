@@ -112,6 +112,7 @@ class CmdPrepareSelfEditorAccount
   AUTH_SELF_EDITOR = RDF::URI.new('http://vitro.mannlib.cornell.edu/ns/vitro/authorization#SELF_EDITOR')
   AUTH_STATUS = RDF::URI.new('http://vitro.mannlib.cornell.edu/ns/vitro/authorization#status')
   AUTH_USER_ACCOUNT = RDF::URI.new('http://vitro.mannlib.cornell.edu/ns/vitro/authorization#UserAccount')
+
   def initialize(args)
     @args = args
 
